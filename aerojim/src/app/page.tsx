@@ -76,7 +76,7 @@ export default function HomePage() {
             </h1>
             <p className="text-lg text-gray-300 leading-relaxed mb-8 max-w-2xl">
               AeroJim supplies wholesale accessories, parts, and ancillaries for
-              upstream and downstream oil & gas operations — from wellhead
+              upstream and downstream oil & gas operations from wellhead
               components and API valves to flanges, instrumentation, and safety
               systems.
             </p>
