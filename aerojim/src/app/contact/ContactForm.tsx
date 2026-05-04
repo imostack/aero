@@ -190,7 +190,7 @@ export default function ContactForm() {
                     name="email"
                     value={form.email}
                     onChange={handleChange}
-                    placeholder="john@company.com"
+                    placeholder="morris@company.com"
                     className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
                   />
                 </div>
@@ -203,7 +203,7 @@ export default function ContactForm() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
-                    placeholder="+1 234 567 8900"
+                    placeholder="+234 908 000 0000"
                     className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
                   />
                 </div>
@@ -220,7 +220,7 @@ export default function ContactForm() {
                     name="country"
                     value={form.country}
                     onChange={handleChange}
-                    placeholder="United States"
+                    placeholder="Nigeria"
                     className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
                   />
                 </div>
