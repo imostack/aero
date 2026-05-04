@@ -159,7 +159,7 @@ export default function ContactForm() {
                     name="name"
                     value={form.name}
                     onChange={handleChange}
-                    placeholder="John Smith"
+                    placeholder="Emeka Morris"
                     className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition"
                   />
                 </div>
