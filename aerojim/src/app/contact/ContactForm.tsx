@@ -25,6 +25,8 @@ export default function ContactForm() {
   const prefilledCategory = searchParams.get("category") || "";
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -45,9 +47,23 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,7 +91,8 @@ export default function ContactForm() {
               <Phone size={17} className="text-amber-400 mt-0.5 shrink-0" />
               <div>
                 <div className="text-xs text-gray-400 mb-0.5">Phone</div>
-                <span className="text-sm">+234 906 489 2994</span>
+                <span className="text-sm">+234 703 447 9774</span>
+                <span className="text-sm">+234 802 817 3123</span>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -83,7 +100,7 @@ export default function ContactForm() {
               <div>
                 <div className="text-xs text-gray-400 mb-0.5">Coverage</div>
                 <span className="text-sm">
-                  Aba ExpressWay, Port Harcourt, Nigeria
+                  Nigeria
                 </span>
               </div>
             </div>
@@ -288,11 +305,15 @@ export default function ContactForm() {
                 />
               </div>
 
+              {error && (
+                <p className="text-sm text-red-600 text-center">{error}</p>
+              )}
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-[#0a1628] font-bold py-3.5 rounded-lg text-sm transition-colors"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 disabled:cursor-not-allowed text-[#0a1628] font-bold py-3.5 rounded-lg text-sm transition-colors"
               >
-                <Send size={16} /> Submit Enquiry
+                <Send size={16} /> {loading ? "Sending…" : "Submit Enquiry"}
               </button>
               <p className="text-xs text-gray-400 text-center">
                 We respond to all enquiries within 24 hours on business days.
