@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   }
 
   const { error } = await resend.emails.send({
-    from: "AeroJim Enquiries <onboarding@resend.dev>",
+    from: "AeroJim Enquiries <noreply@mail.aerojim.com>",
     to: "sales@aerojim.com",
     replyTo: email,
     subject: `New RFQ from ${company} — ${product}`,
@@ -42,7 +42,8 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
+    console.error("Resend error:", error);
+    return NextResponse.json({ error: "Failed to send email", detail: error.message }, { status: 500 });
   }
 
   return NextResponse.json({ success: true });
