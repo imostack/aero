@@ -91,7 +91,7 @@ export default function ContactForm() {
               <Phone size={17} className="text-amber-400 mt-0.5 shrink-0" />
               <div>
                 <div className="text-xs text-gray-400 mb-0.5">Phone</div>
-                <span className="text-sm">+234 703 447 9774</span>
+                <span className="text-sm">+234 703 447 9774</span> | 
                 <span className="text-sm">+234 802 817 3123</span>
               </div>
             </div>
