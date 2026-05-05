@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
   const [internalResult, confirmationResult] = await Promise.all([
     resend.emails.send({
-      from: "AeroJim Enquiries <noreply@mail.aerojim.com>",
+      from: "AeroJim Enquiries <enquiries@mail.aerojim.com>",
       to: "sales@aerojim.com",
       replyTo: email,
       subject: `New RFQ from ${company} — ${product}`,
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
               <tr><td style="padding:8px 0;color:#6b7280">Quantity</td><td style="padding:8px 0">${quantity || "—"}</td></tr>
             </table>
             ${message ? `<div style="margin-top:16px;padding:14px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;font-size:13px;color:#374151"><strong>Additional Details:</strong><br/><br/>${message}</div>` : ""}
-            <p style="margin-top:20px;font-size:12px;color:#9ca3af">Reply directly to this email to respond to ${name}.</p>
+            <p style="margin-top:20px;font-size:12px;color:#9ca3af">Hit <strong>Reply</strong> to respond directly to ${name} at ${email}.</p>
           </div>
         </div>
       `,
