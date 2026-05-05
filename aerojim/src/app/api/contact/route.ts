@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
   const [internalResult, confirmationResult] = await Promise.all([
     resend.emails.send({
-      from: "AeroJim Enquiries <enquiries@mail.aerojim.com>",
+      from: "AeroJim Enquiries <enquiries@aerojim.com>",
       to: "sales@aerojim.com",
       replyTo: email,
       subject: `New RFQ from ${company} — ${product}`,
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       `,
     }),
     resend.emails.send({
-      from: "AeroJim <noreply@mail.aerojim.com>",
+      from: "AeroJim <noreply@aerojim.com>",
       to: email,
       subject: "We've received your enquiry — AeroJim",
       html: `
