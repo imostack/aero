@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const [internalResult, confirmationResult] = await Promise.all([
     resend.emails.send({
       from: "AeroJim Enquiries <enquiries@mail.aerojim.com>",
-      to: "sales@aerojim.com",
+      to: "alproseltech@gmail.com",
       replyTo: email,
       subject: `New RFQ from ${company} — ${product}`,
       html: `
