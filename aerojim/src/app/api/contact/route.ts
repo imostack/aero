@@ -15,8 +15,8 @@ export async function POST(request: Request) {
 
   const [internalResult, confirmationResult] = await Promise.all([
     resend.emails.send({
-      from: "AeroJim Enquiries <enquiries@aerojim.com>",
-      to: "sales@aerojim.com",
+      from: "AeroJim Enquiries <enquiries@mail.aerojim.com>",
+      to: "sales@mail.aerojim.com",
       replyTo: email,
       subject: `New RFQ from ${company} — ${product}`,
       html: `
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       `,
     }),
     resend.emails.send({
-      from: "AeroJim <noreply@aerojim.com>",
+      from: "AeroJim <noreply@mail.aerojim.com>",
       to: email,
       subject: "We've received your enquiry — AeroJim",
       html: `
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
             </div>
             <p style="font-size:14px;margin:24px 0 4px">Best regards,</p>
             <p style="font-size:14px;margin:0;font-weight:600;color:#0a1628">AeroJim Energy Supply Solutions</p>
-            <p style="font-size:13px;margin:4px 0 0;color:#6b7280"><a href="mailto:sales@aerojim.com" style="color:#f59e0b">sales@aerojim.com</a></p>
+            <p style="font-size:13px;margin:4px 0 0;color:#6b7280"><a href="mailto:sales@mail.aerojim.com" style="color:#f59e0b">sales@mail.aerojim.com</a></p>
           </div>
         </div>
       `,
