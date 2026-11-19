@@ -28,8 +28,8 @@ export default function Footer() {
               </p>
             </div>
             <p className="text-sm leading-relaxed mb-5">
-              Wholesale supplier of oil & gas accessories, parts, and ancillaries
-              for upstream and downstream operations worldwide.
+              Oil & gas equipment leasing, sourced from trusted owners, plus
+              wholesale parts supply for upstream and downstream operations.
             </p>
             <div className="flex gap-3">
               <a
@@ -47,7 +47,7 @@ export default function Footer() {
           {/* Products */}
           <div>
             <h4 className="text-white font-semibold text-sm mb-4 tracking-wide uppercase">
-              Products
+              Parts Supply
             </h4>
             <ul className="space-y-2">
               {productLinks.map((link) => (
@@ -71,8 +71,8 @@ export default function Footer() {
             <ul className="space-y-2">
               {[
                 { label: "About Us", href: "/about" },
-                { label: "Products", href: "/products" },
-                { label: "Request a Quote", href: "/contact" },
+                { label: "Lease Equipment", href: "/equipment" },
+                { label: "Parts Supply", href: "/products" },
                 { label: "Contact", href: "/contact" },
               ].map((link) => (
                 <li key={link.label}>

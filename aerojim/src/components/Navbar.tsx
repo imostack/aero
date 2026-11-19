@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Products", href: "/products" },
-  { label: "Equipment Leasing", href: "/equipment" },
+  { label: "Lease Equipment", href: "/equipment" },
+  { label: "Parts Supply", href: "/products" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -43,10 +43,10 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/equipment/request"
               className="bg-amber-500 hover:bg-amber-400 text-[#0a1628] text-sm font-bold px-5 py-2 rounded transition-colors duration-200 tracking-wide"
             >
-              Request a Quote
+              Request Equipment
             </Link>
           </nav>
 
@@ -76,11 +76,11 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/contact"
+              href="/equipment/request"
               className="block bg-amber-500 hover:bg-amber-400 text-[#0a1628] text-sm font-bold px-5 py-2 rounded text-center mt-2 transition-colors"
               onClick={() => setMenuOpen(false)}
             >
-              Request a Quote
+              Request Equipment
             </Link>
           </div>
         </div>

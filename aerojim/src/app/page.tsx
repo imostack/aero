@@ -1,248 +1,150 @@
 import Link from "next/link";
-import { categories } from "@/lib/products";
-import {
-  CheckCircle,
-  Globe,
-  PackageCheck,
-  Headphones,
-  ArrowRight,
-  ShieldCheck,
-  TrendingUp,
-  Wrench,
-} from "lucide-react";
+import { ArrowRight, ClipboardList, Handshake, Mail, PackageSearch, Truck } from "lucide-react";
+import { equipmentCategories } from "@/lib/equipment";
+import HeroSearch from "@/components/HeroSearch";
 
-const stats = [
-  { value: "10+", label: "Product Categories" },
-  { value: "500+", label: "Product Lines" },
-  { value: "Global", label: "Supply Chain" },
-  { value: "B2B", label: "Wholesale Only" },
-];
-
-const whyUs = [
+const steps = [
   {
-    icon: PackageCheck,
-    title: "API & ASME Certified Stock",
-    body: "Every product we supply meets API, ASME, ANSI, and international standards required for oil & gas applications.",
+    icon: ClipboardList,
+    title: "Tell us what you need",
+    body: "Describe the equipment, location and dates. It takes two minutes.",
   },
   {
-    icon: Globe,
-    title: "Global Sourcing Network",
-    body: "We source from approved manufacturers worldwide so you get the best quality at competitive wholesale prices.",
+    icon: PackageSearch,
+    title: "We check with owners",
+    body: "We ask our vetted equipment owners for availability and day rates.",
   },
   {
-    icon: Headphones,
-    title: "Dedicated Technical Support",
-    body: "Our engineering team helps you specify the right products — from material grades to pressure ratings and end connections.",
+    icon: Handshake,
+    title: "Get one clear quote",
+    body: "You get a single quote from AeroJim, usually within 24–48 hours.",
   },
   {
-    icon: ShieldCheck,
-    title: "Quality Assurance",
-    body: "Full material traceability, MTRs, and third-party inspection available on all orders.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Competitive Wholesale Pricing",
-    body: "Volume pricing and framework agreements available for contractors, EPC companies, and operators.",
-  },
-  {
-    icon: Wrench,
-    title: "Upstream & Downstream Coverage",
-    body: "From wellhead and drilling to refinery and pipeline — we cover the full value chain.",
+    icon: Truck,
+    title: "Accept and mobilise",
+    body: "Accept online. We handle the agreement and coordination.",
   },
 ];
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-[#0a1628] text-white overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, #f59e0b 0, #f59e0b 1px, transparent 0, transparent 50%)",
-            backgroundSize: "20px 20px",
-          }}
-        />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 tracking-widest uppercase">
-              Wholesale Oil & Gas Supply
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
-              Your Trusted Source for{" "}
-              <span className="text-amber-400">Oil & Gas</span> Equipment &
-              Parts
-            </h1>
-            <p className="text-lg text-gray-300 leading-relaxed mb-8 max-w-2xl">
-              AeroJim supplies wholesale accessories, parts, and ancillaries for
-              upstream and downstream oil & gas operations from wellhead
-              components and API valves to flanges, instrumentation, and safety
-              systems.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/products"
-                className="inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 text-[#0a1628] font-bold px-7 py-3.5 rounded text-sm tracking-wide transition-colors"
-              >
-                Browse Products <ArrowRight size={16} />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 border border-white/30 hover:border-amber-400 hover:text-amber-400 text-white font-semibold px-7 py-3.5 rounded text-sm tracking-wide transition-colors"
-              >
-                Request a Quote
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats bar */}
-      <section className="bg-[#0d1f3c] text-white border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-x divide-white/10">
-            {stats.map((s) => (
-              <div key={s.label} className="text-center px-4">
-                <div className="text-3xl font-black text-amber-400">{s.value}</div>
-                <div className="text-xs text-gray-400 mt-1 tracking-wide uppercase">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Product categories */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-black text-[#0a1628] mb-3">
-              Product Categories
-            </h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
-              Comprehensive range of oil & gas equipment parts and accessories
-              for all your upstream and downstream needs.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/products/${cat.slug}`}
-                className="group bg-[#f8f9fa] hover:bg-[#0a1628] border border-gray-100 hover:border-[#0a1628] rounded-xl p-6 transition-all duration-200"
-              >
-                <div className="text-3xl mb-3">{cat.icon}</div>
-                <h3 className="font-bold text-[#0a1628] group-hover:text-white text-base mb-2 transition-colors">
-                  {cat.name}
-                </h3>
-                <p className="text-gray-500 group-hover:text-gray-300 text-sm leading-relaxed line-clamp-2 transition-colors">
-                  {cat.description}
-                </p>
-                <div className="mt-4 flex items-center gap-1 text-amber-500 group-hover:text-amber-400 text-xs font-semibold tracking-wide transition-colors">
-                  View Products <ArrowRight size={13} />
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 bg-[#0a1628] hover:bg-[#0d2550] text-white font-semibold px-8 py-3 rounded text-sm transition-colors"
-            >
-              View All Products <ArrowRight size={15} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Why AeroJim */}
-      <section className="py-20 bg-[#f8f9fa]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-black text-[#0a1628] mb-3">
-              Why Choose AeroJim?
-            </h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
-              We understand the demands of the oil & gas industry. Our supply
-              solutions are built around reliability, compliance, and speed.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {whyUs.map((item) => (
-              <div
-                key={item.title}
-                className="bg-white rounded-xl p-7 border border-gray-100 shadow-sm"
-              >
-                <div className="w-11 h-11 rounded-lg bg-amber-50 flex items-center justify-center mb-4">
-                  <item.icon size={22} className="text-amber-500" />
-                </div>
-                <h3 className="font-bold text-[#0a1628] text-base mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Industries served */}
-      <section className="py-16 bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-2xl font-black text-[#0a1628] mb-10">
-            Industries & Sectors We Supply
-          </h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              "Upstream Exploration & Production",
-              "Drilling Operations",
-              "Well Completion & Workover",
-              "Gas Processing",
-              "Oil Refining",
-              "Pipeline & Midstream",
-              "LNG / LPG Facilities",
-              "Petrochemicals",
-              "Offshore Platforms",
-              "EPC Contractors",
-              "MRO Procurement",
-            ].map((sector) => (
-              <span
-                key={sector}
-                className="bg-[#f0f4ff] text-[#0a1628] border border-[#c7d5f0] text-sm font-medium px-4 py-2 rounded-full"
-              >
-                {sector}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA banner */}
-      <section className="bg-amber-500 py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-black text-[#0a1628] mb-4">
-            Ready to Place a Wholesale Order?
-          </h2>
-          <p className="text-[#0a1628]/70 text-lg mb-8">
-            Send us your RFQ, material requisition, or enquiry and we will
-            respond within 24 hours with pricing and availability.
+      {/* Hero: what we do + the one thing to do */}
+      <section className="bg-[#0a1628] text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-28 lg:pb-32 text-center">
+          <p className="text-amber-400 text-xs font-semibold tracking-[0.25em] uppercase mb-5">
+            Oil &amp; gas equipment leasing
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="bg-[#0a1628] hover:bg-[#0d2550] text-white font-bold px-8 py-3.5 rounded text-sm transition-colors"
-            >
-              Request a Quote
-            </Link>
-            <Link
-              href="/products"
-              className="bg-white hover:bg-gray-100 text-[#0a1628] font-bold px-8 py-3.5 rounded text-sm transition-colors"
-            >
-              Browse Products
-            </Link>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] mb-5">
+            Need equipment?
+            <br />
+            <span className="text-amber-400">Tell us. We&apos;ll find it.</span>
+          </h1>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-10">
+            Describe what you need to lease. AeroJim sources it from trusted
+            owners and sends you one quote, with no calls to chase.
+          </p>
+
+          <HeroSearch />
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm">
+            <span className="text-gray-400">Popular:</span>
+            {equipmentCategories.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/equipment/request?category=${c.slug}`}
+                className="border border-white/20 hover:border-amber-400 hover:text-amber-400 rounded-full px-4 py-1.5 transition-colors"
+              >
+                {c.icon} {c.name}
+              </Link>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#0a1628] text-center mb-12">
+            How it works
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {steps.map((s, i) => (
+              <div key={s.title} className="text-center">
+                <div className="w-14 h-14 mx-auto rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mb-4 relative">
+                  <s.icon size={24} />
+                  <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#0a1628] text-amber-400 text-xs font-bold flex items-center justify-center">
+                    {i + 1}
+                  </span>
+                </div>
+                <h3 className="font-bold text-[#0a1628] mb-1">{s.title}</h3>
+                <p className="text-sm text-gray-600">{s.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What you can lease */}
+      <section className="py-16 bg-[#f8f9fa]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#0a1628] text-center mb-3">
+            What you can lease
+          </h2>
+          <p className="text-gray-600 text-center mb-10">
+            More equipment types are being added.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {equipmentCategories.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/equipment/request?category=${c.slug}`}
+                className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-amber-300 transition p-8"
+              >
+                <div className="text-4xl mb-3">{c.icon}</div>
+                <h3 className="text-xl font-bold text-[#0a1628] mb-1">{c.name}</h3>
+                <p className="text-sm text-gray-600 mb-4">{c.tagline}</p>
+                <span className="inline-flex items-center gap-1.5 text-sm font-bold text-amber-600 group-hover:gap-2.5 transition-all">
+                  Request this <ArrowRight size={15} />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Owner CTA */}
+      <section className="py-16 bg-[#0a1628] text-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl sm:text-3xl font-black mb-3">
+            Own equipment? <span className="text-amber-400">Get it leased.</span>
+          </h2>
+          <p className="text-gray-300 mb-7">
+            Join our vendor network. We bring you qualified lease requests, and
+            you just confirm availability and your rate.
+          </p>
+          <a
+            href="mailto:sales@aerojim.com?subject=Vendor%20network%20enquiry"
+            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-[#0a1628] font-bold px-7 py-3.5 rounded text-sm transition-colors"
+          >
+            <Mail size={16} /> Become a vendor
+          </a>
+        </div>
+      </section>
+
+      {/* Parts, de-emphasised */}
+      <section className="py-10 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <p className="text-gray-600 text-sm">
+            <strong className="text-[#0a1628]">Looking to buy, not lease?</strong>{" "}
+            We also supply wholesale valves, flanges, wellhead equipment and other oil &amp; gas parts.
+          </p>
+          <Link
+            href="/products"
+            className="shrink-0 text-sm font-bold text-amber-600 hover:text-amber-500 inline-flex items-center gap-1.5"
+          >
+            Browse parts supply <ArrowRight size={15} />
+          </Link>
         </div>
       </section>
     </>

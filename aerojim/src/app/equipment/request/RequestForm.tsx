@@ -22,7 +22,7 @@ export default function RequestForm() {
     location: "",
     start_date: "",
     duration: "",
-    notes: "",
+    notes: searchParams.get("q") ?? "",
     website: "", // honeypot
   });
   const [details, setDetails] = useState<Record<string, string>>({});

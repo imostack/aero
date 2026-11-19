@@ -4,11 +4,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "AeroJim | Oil & Gas Wholesale Supply",
+  title: "AeroJim | Oil & Gas Equipment Leasing",
   description:
-    "AeroJim is a wholesale supplier of oil and gas accessories, parts, and ancillaries for upstream and downstream equipment. Valves, flanges, wellhead, instrumentation and more.",
+    "Lease well testing equipment, barges and more. Tell AeroJim what you need and we source availability and day rates from trusted owners. Also wholesale oil and gas parts.",
   keywords:
-    "oil gas wholesale, valves, flanges, wellhead, pipes, instrumentation, oil field equipment, upstream downstream",
+    "oil gas equipment leasing, well testing equipment, barges for lease, Nigeria, oil gas wholesale, valves, flanges, wellhead, pipes, instrumentation, oil field equipment, upstream downstream",
 };
 
 export default function RootLayout({
