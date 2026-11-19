@@ -65,6 +65,22 @@ async function createSchema(sql: Sql) {
 
   await sql`ALTER TABLE requests ADD COLUMN IF NOT EXISTS decline_note TEXT`;
 
+  await sql`CREATE TABLE IF NOT EXISTS vendor_applications (
+    id SERIAL PRIMARY KEY,
+    company TEXT NOT NULL,
+    contact_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    location TEXT NOT NULL,
+    categories TEXT[] NOT NULL DEFAULT '{}',
+    equipment_summary TEXT,
+    rc_number TEXT,
+    status TEXT NOT NULL DEFAULT 'new',
+    admin_notes TEXT,
+    vendor_id INTEGER,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )`;
+
   await sql`CREATE TABLE IF NOT EXISTS request_vendors (
     id SERIAL PRIMARY KEY,
     request_id INTEGER NOT NULL REFERENCES requests(id) ON DELETE CASCADE,

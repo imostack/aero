@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ClipboardList, Handshake, Mail, PackageSearch, Truck } from "lucide-react";
+import { ArrowRight, ClipboardList, Handshake, Mail, PackageSearch, ShieldCheck, Truck } from "lucide-react";
 import { categoriesByGroup, equipmentCategories } from "@/lib/equipment";
 import HeroSearch from "@/components/HeroSearch";
 
@@ -20,9 +20,14 @@ const steps = [
     body: "You get a single quote from AeroJim, usually within 24–72 hours.",
   },
   {
+    icon: ShieldCheck,
+    title: "Inspect and approve",
+    body: "Accept online, then inspect and pressure test the equipment before it moves.",
+  },
+  {
     icon: Truck,
-    title: "Accept and mobilise",
-    body: "Accept online. We handle the agreement and coordination.",
+    title: "Mobilise",
+    body: "Once you are satisfied, we coordinate mobilisation to your site.",
   },
 ];
 
@@ -68,7 +73,7 @@ export default function HomePage() {
           <h2 className="text-2xl sm:text-3xl font-black text-[#0a1628] text-center mb-12">
             How it works
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
             {steps.map((s, i) => (
               <div key={s.title} className="text-center">
                 <div className="w-14 h-14 mx-auto rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mb-4 relative">
@@ -138,12 +143,12 @@ export default function HomePage() {
             Join our vendor network. We bring you qualified lease requests, and
             you just confirm availability and your rate.
           </p>
-          <a
-            href="mailto:sales@aerojim.com?subject=Vendor%20network%20enquiry"
+          <Link
+            href="/vendors/apply"
             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-[#0a1628] font-bold px-7 py-3.5 rounded text-sm transition-colors"
           >
             <Mail size={16} /> Become a vendor
-          </a>
+          </Link>
         </div>
       </section>
 

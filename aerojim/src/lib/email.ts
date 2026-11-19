@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { categoryName, getEquipmentCategory } from "./equipment";
+import type { Application } from "./applications";
 import {
   fmtDate,
   money,
@@ -131,6 +132,7 @@ export function sendFinderQuote(r: RequestRow, q: FinderQuote) {
         ${row("Quote valid until", q.valid_until ? fmtDate(q.valid_until) : "")}
       </table>
       ${q.notes ? `<p>${esc(q.notes).replace(/\n/g, "<br/>")}</p>` : ""}
+      <p style="color:#6b7280;font-size:13px">Acceptance is subject to inspection and testing before mobilisation.</p>
       ${button(`${siteUrl()}/quote/${r.token}`, "View & accept quote")}`),
   });
 }
@@ -158,7 +160,7 @@ export function sendFinderAccepted(r: RequestRow) {
     subject: `Quote accepted — ${r.ref}`,
     html: wrap(`
       <p>Hi ${esc(r.name)},</p>
-      <p>Thank you for accepting our quote for request <strong>${esc(r.ref)}</strong>. Our team will contact you shortly with the agreement and next steps.</p>`),
+      <p>Thank you for accepting our quote for request <strong>${esc(r.ref)}</strong>. Your acceptance is subject to satisfactory inspection and testing of the equipment before mobilisation. Our team will contact you shortly with the agreement and to arrange the inspection.</p>`),
   });
 }
 
@@ -198,5 +200,39 @@ export function sendAdminAccepted(r: RequestRow, q: FinderQuote) {
     html: wrap(`
       <p><strong>${esc(r.company)}</strong> accepted the quote at <strong>${esc(money(q.day_rate, q.currency))}/day</strong> for ${esc(r.ref)}. Contact ${esc(r.name)} at <a href="mailto:${esc(r.email)}">${esc(r.email)}</a> to issue the agreement.</p>
       ${button(`${siteUrl()}/admin/requests/${r.id}`, "Open in admin")}`),
+  });
+}
+
+/* ---------------------------- vendor applications --------------------------- */
+
+export function sendApplicationReceived(a: Application) {
+  return trySend({
+    from: FROM_NOREPLY,
+    to: a.email,
+    replyTo: ADMIN_EMAIL,
+    subject: "We've received your vendor application — AeroJim",
+    html: wrap(`
+      <p>Hi ${esc(a.contact_name)},</p>
+      <p>Thank you for applying to join the AeroJim vendor network on behalf of <strong>${esc(a.company)}</strong>.</p>
+      <p>A representative from our team will reach out to you shortly to discuss next steps. If you have equipment documents or certificates to share, simply reply to this email.</p>
+      <p style="color:#6b7280;font-size:13px">Equipment: ${esc(a.categories.map(categoryName).join(", "))}</p>`),
+  });
+}
+
+export function sendAdminNewApplication(a: Application) {
+  return trySend({
+    from: FROM_REQUESTS,
+    to: ADMIN_EMAIL,
+    replyTo: a.email,
+    subject: `New vendor application — ${a.company}`,
+    html: wrap(`
+      <p><strong>${esc(a.contact_name)}</strong>, ${esc(a.company)} — <a href="mailto:${esc(a.email)}">${esc(a.email)}</a> · ${esc(a.phone)}</p>
+      <table style="width:100%;border-collapse:collapse">
+        ${row("Based in", a.location)}
+        ${row("CAC / RC", a.rc_number)}
+        ${row("Equipment", a.categories.map(categoryName).join(", "))}
+      </table>
+      ${a.equipment_summary ? `<p style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:12px">${esc(a.equipment_summary).replace(/\n/g, "<br/>")}</p>` : ""}
+      ${button(`${siteUrl()}/admin/applications`, "Review application")}`),
   });
 }

@@ -40,8 +40,8 @@ export default async function FinderQuotePage({
           <div className="flex items-start gap-3 bg-green-50 border border-green-200 text-green-800 rounded-xl p-5 mb-6 text-sm">
             <CheckCircle size={20} className="shrink-0 mt-0.5" />
             <div>
-              <strong>Quote accepted.</strong> Our team will contact you shortly with the agreement and
-              next steps.
+              <strong>Quote accepted, subject to inspection and testing.</strong> Our team will contact you
+              shortly to arrange the agreement and your inspection before mobilisation.
             </div>
           </div>
         )}
@@ -110,6 +110,12 @@ export default async function FinderQuotePage({
             );
           })}
         </div>
+
+        {open && quotes.length > 0 && (
+          <p className="text-xs text-gray-500 mt-4">
+            Acceptance is subject to satisfactory inspection and testing of the equipment before mobilisation.
+          </p>
+        )}
 
         <p className="text-xs text-gray-400 mt-8">
           Questions? Email <a className="underline" href="mailto:sales@aerojim.com">sales@aerojim.com</a> and quote{" "}

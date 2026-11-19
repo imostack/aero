@@ -73,6 +73,7 @@ export default function Footer() {
                 { label: "About Us", href: "/about" },
                 { label: "Lease Equipment", href: "/equipment" },
                 { label: "Parts Supply", href: "/products" },
+                { label: "Become a Vendor", href: "/vendors/apply" },
                 { label: "Contact", href: "/contact" },
               ].map((link) => (
                 <li key={link.label}>

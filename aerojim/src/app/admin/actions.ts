@@ -8,6 +8,7 @@ import {
   requireAdmin,
   setAdminSession,
 } from "@/lib/auth";
+import { getApplication, markApproved, setApplicationStatus } from "@/lib/applications";
 import { inviteVendors, vendorsByIds } from "@/lib/dispatch";
 import { sendFinderDeclined, sendFinderQuote, sendVendorRfq } from "@/lib/email";
 import { CURRENCIES, equipmentCategories } from "@/lib/equipment";
@@ -206,4 +207,40 @@ export async function closeRequest(formData: FormData) {
   await setRequestStatus(id, "closed");
   revalidatePath(`/admin/requests/${id}`);
   revalidatePath("/admin");
+}
+
+/* ---------------------------- vendor applications --------------------------- */
+
+export async function updateApplication(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const status = text(formData, "status", 20);
+  if (status !== "contacted" && status !== "rejected" && status !== "new") redirect("/admin/applications");
+  await setApplicationStatus(id, status, text(formData, "notes", 2000));
+  revalidatePath("/admin/applications");
+  redirect("/admin/applications");
+}
+
+/** Approving creates an active vendor, so they start receiving matching requests. */
+export async function approveApplication(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("id"));
+  const app = await getApplication(id);
+  if (!app || app.status === "approved") redirect("/admin/applications");
+
+  const slugs = new Set(equipmentCategories.map((c) => c.slug));
+  const categories = formData.getAll("categories").map(String).filter((c) => slugs.has(c));
+  if (categories.length === 0) redirect("/admin/applications?error=categories");
+
+  const vendorId = await createVendor({
+    name: app.company,
+    contact_name: app.contact_name,
+    email: app.email,
+    phone: app.phone,
+    categories,
+  });
+  await markApproved(id, vendorId, text(formData, "notes", 2000));
+  revalidatePath("/admin/applications");
+  revalidatePath("/admin/vendors");
+  redirect("/admin/applications?approved=1");
 }
