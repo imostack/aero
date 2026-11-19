@@ -15,6 +15,7 @@ const statusStyle: Record<string, string> = {
   quoted: "bg-amber-100 text-amber-800",
   accepted: "bg-green-100 text-green-800",
   closed: "bg-gray-100 text-gray-600",
+  declined: "bg-red-100 text-red-700",
 };
 
 export default async function AdminPage() {
@@ -54,7 +55,11 @@ export default async function AdminPage() {
                     <td className="p-3">{categoryName(r.category)}</td>
                     <td className="p-3">{r.company}</td>
                     <td className="p-3">
-                      {r.responded}/{r.invited}
+                      {r.invited === 0 ? (
+                        <span className="text-xs font-semibold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">manual</span>
+                      ) : (
+                        `${r.responded}/${r.invited}`
+                      )}
                     </td>
                     <td className="p-3">{r.quotes}</td>
                     <td className="p-3">

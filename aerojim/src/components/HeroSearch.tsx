@@ -3,14 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
-
-/** Best-effort guess of the category from free text; the form lets the user change it. */
-function guessCategory(q: string): string {
-  const t = q.toLowerCase();
-  if (/barge|vessel|tug|deck|crane barge|accommodation/.test(t)) return "barges";
-  if (/well|test|separator|choke|flowback|burner|surge|heat exchanger|dst/.test(t)) return "well-testing";
-  return "";
-}
+import { guessCategory } from "@/lib/equipment";
 
 export default function HeroSearch() {
   const router = useRouter();
@@ -37,7 +30,7 @@ export default function HeroSearch() {
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="What do you need? e.g. 2-phase separator, deck barge…"
+          placeholder="What do you need? e.g. 2-phase separator, crane, generator…"
           className="w-full py-3 text-gray-900 placeholder-gray-400 text-base focus:outline-none bg-transparent"
         />
       </label>

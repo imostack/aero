@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { db } from "./db";
 
-export type RequestStatus = "open" | "quoted" | "accepted" | "closed";
+export type RequestStatus = "open" | "quoted" | "accepted" | "closed" | "declined";
 
 export interface Vendor {
   id: number;
@@ -29,6 +29,7 @@ export interface RequestRow {
   details: Record<string, string>;
   notes: string | null;
   accepted_quote_id: number | null;
+  decline_note: string | null;
   created_at: string | Date;
 }
 
@@ -88,12 +89,15 @@ export async function createVendor(v: {
   email: string;
   phone: string;
   categories: string[];
-}) {
+  active?: boolean;
+}): Promise<number> {
   const sql = await db();
-  await sql`
-    INSERT INTO vendors (name, contact_name, email, phone, categories)
-    VALUES (${v.name}, ${v.contact_name || null}, ${v.email}, ${v.phone || null}, ${v.categories})
+  const rows = await sql`
+    INSERT INTO vendors (name, contact_name, email, phone, categories, active)
+    VALUES (${v.name}, ${v.contact_name || null}, ${v.email}, ${v.phone || null}, ${v.categories}, ${v.active ?? true})
+    RETURNING id
   `;
+  return rows[0].id as number;
 }
 
 export async function setVendorActive(id: number, active: boolean) {
@@ -169,6 +173,17 @@ export async function listRequests(): Promise<RequestSummary[]> {
 export async function setRequestStatus(id: number, status: RequestStatus) {
   const sql = await db();
   await sql`UPDATE requests SET status = ${status} WHERE id = ${id}`;
+}
+
+/** Marks a request as one we could not source. Returns false if it was already settled. */
+export async function declineRequest(id: number, note: string): Promise<boolean> {
+  const sql = await db();
+  const rows = await sql`
+    UPDATE requests SET status = 'declined', decline_note = ${note || null}
+    WHERE id = ${id} AND status IN ('open', 'quoted')
+    RETURNING id
+  `;
+  return rows.length > 0;
 }
 
 /* ------------------------------- invites ------------------------------- */

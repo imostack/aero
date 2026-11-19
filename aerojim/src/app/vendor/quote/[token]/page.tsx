@@ -25,7 +25,8 @@ export default async function VendorQuotePage({
 
   const { invite, request } = found;
   const cat = getEquipmentCategory(request.category);
-  const closed = request.status === "accepted" || request.status === "closed";
+  const closed =
+    request.status === "accepted" || request.status === "closed" || request.status === "declined";
   const responded = !!invite.responded_at;
 
   return (

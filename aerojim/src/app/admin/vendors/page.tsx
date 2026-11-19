@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/auth";
-import { categoryName, equipmentCategories } from "@/lib/equipment";
+import { categoriesByGroup, categoryName } from "@/lib/equipment";
 import { listVendors } from "@/lib/rfq";
 import { inputCls, labelCls, primaryBtn } from "@/components/ui";
 import AdminNav from "../AdminNav";
@@ -90,11 +90,18 @@ export default async function VendorsPage({
             </div>
             <fieldset>
               <legend className={labelCls}>Categories *</legend>
-              {equipmentCategories.map((c) => (
-                <label key={c.slug} className="flex items-center gap-2 text-sm py-1">
-                  <input type="checkbox" name="categories" value={c.slug} /> {c.name}
-                </label>
-              ))}
+              <div className="max-h-72 overflow-y-auto pr-1">
+                {categoriesByGroup().map(({ group, categories }) => (
+                  <div key={group.slug} className="mb-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-gray-400 mb-1">{group.name}</p>
+                    {categories.map((c) => (
+                      <label key={c.slug} className="flex items-center gap-2 text-sm py-0.5">
+                        <input type="checkbox" name="categories" value={c.slug} /> {c.name}
+                      </label>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </fieldset>
             <button className={`${primaryBtn} w-full`}>Add vendor</button>
           </form>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ClipboardList, Handshake, Mail, PackageSearch, Truck } from "lucide-react";
-import { equipmentCategories } from "@/lib/equipment";
+import { categoriesByGroup, equipmentCategories } from "@/lib/equipment";
 import HeroSearch from "@/components/HeroSearch";
 
 const steps = [
@@ -17,7 +17,7 @@ const steps = [
   {
     icon: Handshake,
     title: "Get one clear quote",
-    body: "You get a single quote from AeroJim, usually within 24–48 hours.",
+    body: "You get a single quote from AeroJim, usually within 24–72 hours.",
   },
   {
     icon: Truck,
@@ -49,7 +49,7 @@ export default function HomePage() {
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm">
             <span className="text-gray-400">Popular:</span>
-            {equipmentCategories.map((c) => (
+            {equipmentCategories.filter((c) => c.featured).map((c) => (
               <Link
                 key={c.slug}
                 href={`/equipment/request?category=${c.slug}`}
@@ -92,23 +92,38 @@ export default function HomePage() {
             What you can lease
           </h2>
           <p className="text-gray-600 text-center mb-10">
-            More equipment types are being added.
+            Upstream oil &amp; gas equipment, sourced for you. Pick a category to start.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {equipmentCategories.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/equipment/request?category=${c.slug}`}
-                className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-amber-300 transition p-8"
-              >
-                <div className="text-4xl mb-3">{c.icon}</div>
-                <h3 className="text-xl font-bold text-[#0a1628] mb-1">{c.name}</h3>
-                <p className="text-sm text-gray-600 mb-4">{c.tagline}</p>
-                <span className="inline-flex items-center gap-1.5 text-sm font-bold text-amber-600 group-hover:gap-2.5 transition-all">
-                  Request this <ArrowRight size={15} />
-                </span>
-              </Link>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categoriesByGroup()
+              .filter(({ group }) => group.slug !== "other")
+              .map(({ group, categories }) => (
+                <div key={group.slug} className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+                  <h3 className="font-bold text-[#0a1628] mb-1">{group.name}</h3>
+                  <p className="text-xs text-gray-500 mb-4">{group.blurb}</p>
+                  <ul className="space-y-1.5">
+                    {categories.map((c) => (
+                      <li key={c.slug}>
+                        <Link
+                          href={`/equipment/request?category=${c.slug}`}
+                          className="flex items-center gap-2 text-sm text-gray-700 hover:text-amber-600 transition-colors"
+                        >
+                          <span aria-hidden>{c.icon}</span> {c.name}
+                          <ArrowRight size={13} className="ml-auto opacity-40" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            <Link
+              href="/equipment/request?category=other-equipment"
+              className="rounded-xl border-2 border-dashed border-amber-300 hover:bg-amber-50 transition p-6 flex flex-col justify-center text-center"
+            >
+              <div className="text-3xl mb-2">❓</div>
+              <h3 className="font-bold text-[#0a1628] mb-1">Don&apos;t see it?</h3>
+              <p className="text-sm text-gray-600">Tell us what you need and we&apos;ll find it.</p>
+            </Link>
           </div>
         </div>
       </section>

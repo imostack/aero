@@ -22,7 +22,7 @@ export async function submitResponse(formData: FormData) {
 
   const { invite, request } = found;
   const back = `/vendor/quote/${t}`;
-  if (request.status === "accepted" || request.status === "closed") {
+  if (request.status === "accepted" || request.status === "closed" || request.status === "declined") {
     redirect(`${back}?error=closed`);
   }
 

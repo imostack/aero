@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle, Clock } from "lucide-react";
 import { categoryName } from "@/lib/equipment";
@@ -45,18 +46,28 @@ export default async function FinderQuotePage({
           </div>
         )}
 
+        {request.status === "declined" && (
+          <div className="bg-white border border-gray-100 rounded-xl p-6 text-sm text-gray-700 mb-6">
+            <h2 className="font-bold text-[#0a1628] mb-2">We couldn&apos;t source this right now</h2>
+            <p className="whitespace-pre-line mb-4">{request.decline_note}</p>
+            <Link href="/equipment/request" className="text-amber-600 font-semibold hover:text-amber-500">
+              Submit a new request →
+            </Link>
+          </div>
+        )}
+
         {request.status === "closed" && !accepted && (
           <p className="bg-white border border-gray-100 rounded-xl p-6 text-sm text-gray-600 mb-6">
             This request has been closed. Please submit a new request if you still need equipment.
           </p>
         )}
 
-        {quotes.length === 0 && request.status !== "closed" && (
+        {quotes.length === 0 && request.status !== "closed" && request.status !== "declined" && (
           <div className="flex items-start gap-3 bg-white border border-gray-100 rounded-xl p-6 text-sm text-gray-600">
             <Clock size={20} className="text-amber-500 shrink-0 mt-0.5" />
             <div>
               We&apos;re checking availability and rates with our vendors. You&apos;ll receive an email as
-              soon as your quote is ready — typically within 24–48 hours.
+              soon as your quote is ready — typically within 24–72 hours.
             </div>
           </div>
         )}

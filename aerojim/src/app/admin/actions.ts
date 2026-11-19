@@ -9,11 +9,14 @@ import {
   setAdminSession,
 } from "@/lib/auth";
 import { inviteVendors, vendorsByIds } from "@/lib/dispatch";
-import { sendFinderQuote, sendVendorRfq } from "@/lib/email";
+import { sendFinderDeclined, sendFinderQuote, sendVendorRfq } from "@/lib/email";
 import { CURRENCIES, equipmentCategories } from "@/lib/equipment";
 import {
   createFinderQuote,
+  createInvites,
   createVendor,
+  declineRequest as markDeclined,
+  submitVendorResponse,
   getRequest,
   listInvites,
   markInviteReminded,
@@ -129,6 +132,72 @@ export async function sendQuote(formData: FormData) {
   await sendFinderQuote(request, quote);
   revalidatePath(`/admin/requests/${requestId}`);
   redirect(`/admin/requests/${requestId}?sent=1`);
+}
+
+/** Log a quote you sourced off-platform (phone/WhatsApp) so it flows through the normal markup + send step. */
+export async function addManualResponse(formData: FormData) {
+  await requireAdmin();
+  const requestId = Number(formData.get("requestId"));
+  const request = await getRequest(requestId);
+  if (!request) redirect("/admin");
+
+  const back = `/admin/requests/${requestId}`;
+  const name = text(formData, "vendor_name", 160);
+  const rate = Number(text(formData, "day_rate", 30).replace(/,/g, ""));
+  const mobRaw = text(formData, "mob_cost", 30).replace(/,/g, "");
+  const mob = mobRaw ? Number(mobRaw) : 0;
+  if (!name || !Number.isFinite(rate) || rate < 0 || !Number.isFinite(mob) || mob < 0) {
+    redirect(`${back}?error=manual`);
+  }
+
+  const contact = text(formData, "vendor_contact", 200);
+  const vendors = await listVendors();
+  const existing = vendors.find((v) => v.name.toLowerCase() === name.toLowerCase());
+  // New off-platform vendors are saved inactive so they are never auto-emailed until you activate them.
+  const vendorId =
+    existing?.id ??
+    (await createVendor({
+      name,
+      contact_name: "",
+      email: contact.includes("@") ? contact : "",
+      phone: contact.includes("@") ? "" : contact,
+      categories: [request.category],
+      active: false,
+    }));
+
+  await createInvites(requestId, [vendorId]);
+  const invite = (await listInvites(requestId)).find((i) => i.vendor_id === vendorId);
+  if (!invite) redirect(`${back}?error=manual`);
+
+  await submitVendorResponse(invite.id, {
+    available: true,
+    currency: CURRENCIES.find((c) => c === text(formData, "currency")) ?? "USD",
+    day_rate: rate,
+    mob_cost: mob,
+    lead_time: text(formData, "lead_time", 200),
+    valid_until: text(formData, "valid_until", 20),
+    vendor_notes: text(formData, "vendor_notes", 2000),
+  });
+  revalidatePath(back);
+  redirect(`${back}?logged=1`);
+}
+
+/** Tell the finder we could not source their equipment. */
+export async function declineRequest(formData: FormData) {
+  await requireAdmin();
+  const id = Number(formData.get("requestId"));
+  const request = await getRequest(id);
+  if (!request) redirect("/admin");
+
+  const note = text(formData, "note", 2000);
+  if (!note) redirect(`/admin/requests/${id}?error=decline`);
+
+  if (await markDeclined(id, note)) {
+    await sendFinderDeclined(request, note);
+  }
+  revalidatePath(`/admin/requests/${id}`);
+  revalidatePath("/admin");
+  redirect(`/admin/requests/${id}?declined=1`);
 }
 
 export async function closeRequest(formData: FormData) {

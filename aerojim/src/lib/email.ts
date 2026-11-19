@@ -109,7 +109,7 @@ export function sendRequestReceived(r: RequestRow) {
     html: wrap(`
       <p>Hi ${esc(r.name)},</p>
       <p>Thank you for your request for <strong>${esc(categoryName(r.category))}</strong>. Your reference is <strong>${esc(r.ref)}</strong>.</p>
-      <p>We are now checking availability and rates with our vendors and will send you a quote, typically within <strong>24–48 hours</strong> on business days. You can follow the status of your request here:</p>
+      <p>We are now checking availability and rates with our vendors and will send you a quote, typically within <strong>24–72 hours</strong> on business days. You can follow the status of your request here:</p>
       ${button(`${siteUrl()}/quote/${r.token}`, "View your request")}
       ${specTable(r)}`),
   });
@@ -135,6 +135,21 @@ export function sendFinderQuote(r: RequestRow, q: FinderQuote) {
   });
 }
 
+export function sendFinderDeclined(r: RequestRow, note: string) {
+  return trySend({
+    from: FROM_NOREPLY,
+    to: r.email,
+    replyTo: ADMIN_EMAIL,
+    subject: `Update on your request ${r.ref} — AeroJim`,
+    html: wrap(`
+      <p>Hi ${esc(r.name)},</p>
+      <p>${esc(note).replace(/\n/g, "<br/>")}</p>
+      <p>You are welcome to submit a new request at any time. If your requirements change (dates, specifications or location), please send it again and we will look again.</p>
+      ${button(`${siteUrl()}/equipment/request`, "Submit a new request")}
+      <p style="color:#6b7280;font-size:13px">Reference: ${esc(r.ref)} — ${esc(categoryName(r.category))}</p>`),
+  });
+}
+
 export function sendFinderAccepted(r: RequestRow) {
   return trySend({
     from: FROM_NOREPLY,
@@ -154,11 +169,11 @@ export function sendAdminNewRequest(r: RequestRow, invited: string[]) {
     from: FROM_REQUESTS,
     to: ADMIN_EMAIL,
     replyTo: r.email,
-    subject: `New request ${r.ref} — ${categoryName(r.category)} from ${r.company}`,
+    subject: `${invited.length ? "" : "[MANUAL] "}New request ${r.ref} — ${categoryName(r.category)} from ${r.company}`,
     html: wrap(`
       <p><strong>${esc(r.name)}</strong>, ${esc(r.company)} — <a href="mailto:${esc(r.email)}">${esc(r.email)}</a> ${r.phone ? "· " + esc(r.phone) : ""}</p>
       ${specTable(r)}
-      <p>${invited.length ? `Sent to vendors: <strong>${esc(invited.join(", "))}</strong>` : `<strong style="color:#b91c1c">No active vendors for this category — nothing was sent.</strong>`}</p>
+      <p>${invited.length ? `Sent to vendors: <strong>${esc(invited.join(", "))}</strong>` : `<strong style="color:#b91c1c">No vendors in the network for this category: source this one manually, then log the quote in admin.</strong>`}</p>
       ${button(`${siteUrl()}/admin/requests/${r.id}`, "Open in admin")}`),
   });
 }

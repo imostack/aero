@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, Send } from "lucide-react";
-import { equipmentCategories } from "@/lib/equipment";
+import { categoriesByGroup, equipmentCategories } from "@/lib/equipment";
 import { inputCls, labelCls } from "@/components/ui";
 
 export default function RequestForm() {
@@ -70,7 +70,7 @@ export default function RequestForm() {
         )}
         <p className="text-gray-500 max-w-md mx-auto mb-6">
           We&apos;re checking availability and rates with our vendors and will email you a
-          quote, typically within 24–48 hours.
+          quote, typically within 24–72 hours.
         </p>
         {done.token && (
           <Link
@@ -101,10 +101,14 @@ export default function RequestForm() {
           className={inputCls}
         >
           <option value="">Select equipment…</option>
-          {equipmentCategories.map((c) => (
-            <option key={c.slug} value={c.slug}>
-              {c.name}
-            </option>
+          {categoriesByGroup().map(({ group, categories }) => (
+            <optgroup key={group.slug} label={group.name}>
+              {categories.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.name}
+                </option>
+              ))}
+            </optgroup>
           ))}
         </select>
       </div>
